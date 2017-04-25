@@ -15,23 +15,25 @@ namespace Server{
         }
 
         void Process(){
-            int lengthPrefix = 0;
+        int LengthPrefix = 0;
             while (true) {
-                if (lengthPrefix== 0 ) {
+                if (LengthPrefix== 0 ) {
                     if(this.client.Available >=4 ){
                     int fieldNumber;
-                        lengthPrefix = ProtoReader.ReadLengthPrefix(stream, false, PrefixStyle.Fixed32, out fieldNumber);
+                        LengthPrefix = ProtoReader.ReadLengthPrefix(stream, false, PrefixStyle.Fixed32, out fieldNumber);
+                        Console.WriteLine(">>>> LengthPrefix "+LengthPrefix);
                     }
                 }else{
-                    if (this.client.Available >= lengthPrefix) {
+                    Console.WriteLine(">>>> LengthPrefix "+LengthPrefix+" Available "+this.client.Available);
+                    if (this.client.Available >= LengthPrefix) {
                         Serializer.ProcessMessage(stream);
-                        lengthPrefix=0;
+                        LengthPrefix=0;
                     }                        
                 }
             }
         }
 
-        public void Close(){
+        void Close(){
             stream.Close();
             client.Close();
         }

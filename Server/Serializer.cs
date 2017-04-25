@@ -17,8 +17,7 @@ public class Serializer {
     }
 
     public static void Send(Stream stream, object message){
-                model.SerializeWithLengthPrefix(stream, message, typeof(SerializableMessageBase), PrefixStyle.Fixed32, 0);
-
+        model.SerializeWithLengthPrefix(stream, message, typeof(SerializableMessageBase), PrefixStyle.Fixed32, 0);
     }
 
 }
