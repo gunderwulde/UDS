@@ -15,8 +15,8 @@ public class EntryPoint : MonoBehaviour {
         var client = new System.Net.Sockets.TcpClient("127.0.0.1", 16384);
         System.Net.Sockets.NetworkStream stream = client.GetStream();
 
-        SerializableMessage1 testClass = new SerializableMessage1();
-        testClass.Send(stream);
+        new SerializableMessage1().Send(stream);
+//        new SerializableMessage2().Send(stream);
 
         stream.Close();
         client.Close();
