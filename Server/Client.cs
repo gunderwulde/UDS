@@ -5,7 +5,7 @@ using ProtoBuf;
 
 namespace Server{
     public class Client{
-        NetworkStream stream;
+        public NetworkStream stream { get; private set; }
         TcpClient client;
 
         public Client(TcpClient client){
@@ -21,19 +21,19 @@ namespace Server{
                     if(this.client.Available >=4 ){
                     int fieldNumber;
                         LengthPrefix = ProtoReader.ReadLengthPrefix(stream, false, PrefixStyle.Fixed32, out fieldNumber);
-                        Console.WriteLine(">>>> LengthPrefix "+LengthPrefix);
                     }
                 }else{
-                    Console.WriteLine(">>>> LengthPrefix "+LengthPrefix+" Available "+this.client.Available);
                     if (this.client.Available >= LengthPrefix) {
-                        Serializer.ProcessMessage(stream);
+                        Serializer.ProcessMessage(this, LengthPrefix);
                         LengthPrefix=0;
                     }                        
                 }
             }
         }
-
-        void Close(){
+        public void Send(MessageBase message) {
+            Serializer.Send(this, message);
+        }
+        public void Close(){
             stream.Close();
             client.Close();
         }

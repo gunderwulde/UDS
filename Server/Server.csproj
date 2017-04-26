@@ -46,10 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Definitions\SerializableTestClass.cs" />
+    <Compile Include="Protobuf\Definitions\MessageTest1.cs" />
+    <Compile Include="Protobuf\Definitions\MessageTest2.cs" />
+    <Compile Include="Protobuf\Definitions\MessageBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Serializer.cs" />
+    <Compile Include="Protobuf\Serializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
