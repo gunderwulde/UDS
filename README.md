@@ -1,2 +1,0 @@
-# UDS
-Unity Dedicated Server
