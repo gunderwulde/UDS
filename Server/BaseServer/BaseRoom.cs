@@ -28,9 +28,9 @@ namespace Server{
         }
 
         public void Update() {
-            lock (connections) {
-                lock (closeds) {
-                    if (closeds.Count > 0) {
+            if (closeds.Count > 0) {
+                lock (connections) {
+                   lock (closeds) {                    
                         foreach (var connection in closeds)
                             connections.Remove(connection);
                         closeds.Clear();

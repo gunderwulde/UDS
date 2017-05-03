@@ -1,12 +1,26 @@
 using System;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Server{
-    public class BaseConnection{
-        public BaseRoom room { get; private set; }
+    public class BaseConnection: IDisposable{
 
+        static Stack<BaseConnection> stack = new Stack<BaseConnection>();
+        public static BaseConnection New() {
+            if (stack.Count == 0) {
+                return new BaseConnection();
+            }
+            return stack.Pop();
+        }
+
+        public void Dispose() {
+            stack.Push(this);
+        }
+
+        public BaseRoom room { get; private set; }
         NetworkStream   stream;
         TcpClient       client;
 
@@ -21,6 +35,7 @@ namespace Server{
         void Process(){
         int LengthPrefix = 0;
             while (true) {
+                Thread.Sleep(0);
                 try {
                     if (LengthPrefix== 0 ) {
                         if(this.client.Available >=4 ){
