@@ -11,8 +11,7 @@ namespace Server {
             var sockServer = new TcpListener(System.Net.IPAddress.Parse("0.0.0.0"), 16384);
             sockServer.Start();            
             while (true) {
-                var tmp = new Server.BaseConnection();
-                tmp.Init(sockServer.AcceptTcpClient(), lobby);
+                Server.BaseConnection.New().Init( sockServer.AcceptTcpClient(), lobby );
             }
         }
     }
