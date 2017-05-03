@@ -7,7 +7,7 @@ namespace Server {
     class Program {
         static void Main(string[] args) {
             BaseMessage.Init();
-            BaseRoom lobby = new BaseRoom();
+            BaseRoom lobby = BaseRoom.New().Init();
             var sockServer = new TcpListener(System.Net.IPAddress.Parse("0.0.0.0"), 16384);
             sockServer.Start();            
             while (true) {

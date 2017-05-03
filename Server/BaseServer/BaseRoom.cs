@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Server{
-    public class BaseRoom{
-
+    public class BaseRoom: Pool<BaseRoom>{
         List<BaseConnection> connections = new List<BaseConnection>();
         List<BaseConnection> closeds = new List<BaseConnection>();
         DateTime TimeOnStart;
 
-        public BaseRoom(){
+        public BaseRoom Init() {
             TimeOnStart = DateTime.Now;
+            return this;
         }
 
         public void Add(BaseConnection connection) {

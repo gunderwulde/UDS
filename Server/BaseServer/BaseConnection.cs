@@ -6,30 +6,18 @@ using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Server{
-    public class BaseConnection: IDisposable{
-
-        static Stack<BaseConnection> stack = new Stack<BaseConnection>();
-        public static BaseConnection New() {
-            if (stack.Count == 0) {
-                return new BaseConnection();
-            }
-            return stack.Pop();
-        }
-
-        public void Dispose() {
-            stack.Push(this);
-        }
-
+    public class BaseConnection: Pool<BaseConnection> {
         public BaseRoom room { get; private set; }
         NetworkStream   stream;
         TcpClient       client;
 
-        public void Init(TcpClient client, BaseRoom room) {
+        public BaseConnection Init(TcpClient client, BaseRoom room) {
             this.room = room;
             this.client = client;
             this.stream = this.client.GetStream();
             Task.Run(() => Process());
             room.Add(this);
+            return this;
         }
 
         void Process(){
@@ -50,7 +38,7 @@ namespace Server{
                     }
                 }
                 catch (ProtoException e) {
-                    Console.WriteLine(">>> " + e);
+                    Console.WriteLine("Process >>> " + e);
                     Close();
                 }
             }
@@ -65,7 +53,7 @@ namespace Server{
                 BaseMessage.model.SerializeWithLengthPrefix(stream, message, typeof(BaseMessage), PrefixStyle.Fixed32, 0);
             }
             catch (ProtoException e) {
-                Console.WriteLine(">>> " + e);
+                Console.WriteLine("Send >>> " + e);
                 Close();
             }
         }
