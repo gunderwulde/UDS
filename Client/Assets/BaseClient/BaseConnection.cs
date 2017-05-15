@@ -5,7 +5,7 @@ using ProtoBuf.Meta;
 
 public class BaseConnection {
     public NetworkStream stream { get; private set; }
-    TcpClient client;
+    TcpClient client=null;
 
     public BaseConnection(TcpClient client) {
         this.client = client;
@@ -15,6 +15,8 @@ public class BaseConnection {
     int LengthPrefix = 0;
     public void Process() {
         try {
+            if (!client.Connected)
+                return;
             if (LengthPrefix == 0) {
                 if (this.client.Available >= 4) {
                     int fieldNumber;
@@ -51,6 +53,11 @@ public class BaseConnection {
 
     public void Close() {
         stream.Close();
+        stream.Dispose();
         client.Close();
+        stream = null;
+        client = null;
+        // TODO No se detecta el cierre en el servidor
+        
     }
 }

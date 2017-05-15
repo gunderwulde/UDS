@@ -13,9 +13,12 @@ public class EntryPoint : MonoBehaviour {
         BaseMessage.Init();
 
         var tcpClient = new System.Net.Sockets.TcpClient("127.0.0.1", 16384);
+        tcpClient.NoDelay = true;
         client = new BaseConnection(tcpClient);
+
         client.Send(new MessageTest1());
         client.Send(new MessageTest2());
+        client.Close();
     }
 
     // Update is called once per frame
