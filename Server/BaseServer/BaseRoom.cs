@@ -18,6 +18,7 @@ namespace Server{
         public void Add(BaseConnection connection) {
             lock (connections) {
                 connections.Add(connection);
+                System.Console.WriteLine(">>>> Room new connection " + connections.Count);
             }
         }
 

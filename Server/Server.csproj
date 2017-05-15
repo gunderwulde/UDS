@@ -47,12 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServer\BaseRoom.cs" />
+    <Compile Include="Messages\BaseMessage.cs" />
     <Compile Include="Messages\MessageTest1.cs" />
     <Compile Include="Messages\MessageTest2.cs" />
-    <Compile Include="BaseServer\BaseMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BaseServer\BaseConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Pool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

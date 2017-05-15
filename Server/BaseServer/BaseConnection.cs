@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using ProtoBuf;
 
-namespace Server{
+// Ejemplo de sockets asíncromos
+// https://msdn.microsoft.com/es-es/library/bew39x2a(v=vs.110).aspx
+
+namespace Server
+{
     public class BaseConnection: Pool<BaseConnection> {
         public BaseRoom room { get; private set; }
         NetworkStream   stream;
