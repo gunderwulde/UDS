@@ -9,7 +9,7 @@ public class MessageTest2 : BaseMessage {
     }
 
     public override void Process(BaseConnection client) {
-        UnityEngine.Debug.Log(">>>> MessageTest2");
+        UnityEngine.Debug.Log(">>>> MessageTest2 "+_data);
     }
 }
 

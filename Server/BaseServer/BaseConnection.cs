@@ -14,8 +14,13 @@ namespace Server
         public BaseRoom room { get; private set; }
         NetworkStream   stream;
         TcpClient       client;
+        TimeSpan        inicio = new TimeSpan(DateTime.Now.Ticks);
+        long            lastKA = DateTime.Now.Ticks; // 1 tick = 1 nanosg
+        bool            cerrado = true;
+        int             secuencia = 0;
 
         public BaseConnection Init(TcpClient client, BaseRoom room) {
+            this.cerrado = false;
             this.room = room;
             this.client = client;
             this.stream = this.client.GetStream();
@@ -25,13 +30,14 @@ namespace Server
         }
 
         void Process(){
-        int LengthPrefix = 0;
-            while (true) {
+            long currentTicks = DateTime.Now.Ticks;
+            int LengthPrefix = 0;
+            while (true && !cerrado) {
                 Thread.Sleep(0);
                 try {
                     if (LengthPrefix== 0 ) {
                         if(this.client.Available >=4 ){
-                        int fieldNumber;
+                            int fieldNumber;
                             LengthPrefix = ProtoReader.ReadLengthPrefix(stream, false, PrefixStyle.Fixed32, out fieldNumber);
                         }
                     }else{
@@ -40,6 +46,18 @@ namespace Server
                             LengthPrefix=0;
                         }                        
                     }
+                   
+                    currentTicks = currentTicks = DateTime.Now.Ticks;
+                    if ( currentTicks - lastKA > 100000000L )
+                    {
+                        MessageTest1 msgKA = new MessageTest1
+                        {
+                            secuencia = secuencia++
+                        };                  
+                        Send(msgKA);
+                        lastKA = currentTicks;
+                    }
+
                 }
                 catch (ProtoException e) {
                     Console.WriteLine("Process >>> " + e);
@@ -57,7 +75,12 @@ namespace Server
                 BaseMessage.model.SerializeWithLengthPrefix(stream, message, typeof(BaseMessage), PrefixStyle.Fixed32, 0);
             }
             catch (ProtoException e) {
-                Console.WriteLine("Send >>> " + e);
+                Console.WriteLine("ProtoException Send >>> " + e);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception Send >>> " + ex);
                 Close();
             }
         }
@@ -66,6 +89,7 @@ namespace Server
             stream.Close();
             client.Close();
             room.Remove(this);
+            this.cerrado = true;
         }
     }
 }

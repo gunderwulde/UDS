@@ -15,7 +15,7 @@ public class BaseConnection {
     int LengthPrefix = 0;
     public void Process() {
         try {
-            if (!client.Connected)
+            if (client == null || !client.Connected)
                 return;
             if (LengthPrefix == 0) {
                 if (this.client.Available >= 4) {

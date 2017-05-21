@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BaseServer\BaseRoom.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
+    <Compile Include="Messages\MessageKA.cs" />
     <Compile Include="Messages\MessageTest1.cs" />
     <Compile Include="Messages\MessageTest2.cs" />
     <Compile Include="Program.cs" />

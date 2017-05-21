@@ -18,7 +18,7 @@ public class EntryPoint : MonoBehaviour {
 
         client.Send(new MessageTest1());
         client.Send(new MessageTest2());
-        client.Close();
+        //client.Close();
     }
 
     // Update is called once per frame

@@ -14,6 +14,7 @@ namespace Server {
             while (true) {
                 Thread.Sleep(100);
                 Server.BaseConnection.New().Init( sockServer.AcceptTcpClient(), lobby );
+                lobby.Update();
             }
         }
     }
